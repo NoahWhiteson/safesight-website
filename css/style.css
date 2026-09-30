@@ -297,3 +297,37 @@ footer{
     transition:none!important;
   }
 }
+
+/* Product demo video — Apple-like showcase in How it works */
+.demo-video-wrap{
+  max-width:880px;
+  margin:52px auto 4px;
+  padding:0 2px;
+}
+.demo-video{
+  position:relative;
+  border-radius:22px;
+  overflow:hidden;
+  background:#0f1419;
+  box-shadow:
+    0 0 0 1px rgba(180,198,214,.4),
+    0 20px 50px rgba(30,55,90,.14),
+    0 4px 14px rgba(30,55,90,.06);
+}
+.demo-video video{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:22px;
+  vertical-align:middle;
+  background:#0f1419;
+}
+.demo-video video:focus-visible{
+  outline:2px solid #1674ec;
+  outline-offset:4px;
+}
+@media(max-width:760px){
+  .demo-video-wrap{margin:36px auto 0;padding:0}
+  .demo-video{border-radius:16px}
+  .demo-video video{border-radius:16px}
+}
