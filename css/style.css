@@ -200,23 +200,69 @@ footer{
   .button,.report-link,.report-link img,.hazard-tabs button{transition:none}
 }
 
-/* Sticky chrome + phone entrance overrides */
+/* Sticky chrome: flat at rest → floating pill on scroll */
 .site-chrome{
   position:sticky;
   top:0;
   z-index:100;
-  background:rgba(252,253,255,.78);
-  -webkit-backdrop-filter:saturate(1.8) blur(20px);
-  backdrop-filter:saturate(1.8) blur(20px);
-  border-bottom:1px solid rgba(215,223,230,.55);
-}
-.site-chrome .launch-banner{
   background:transparent;
-  border-bottom:1px solid rgba(188,213,240,.35);
+  border:none;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+  padding:0;
+  transition:padding .45s cubic-bezier(.22,1,.36,1);
 }
 .site-chrome .nav{
-  background:transparent;
+  width:100%;
+  max-width:none;
+  margin:0 auto;
+  height:96px;
+  padding:0 6%;
+  background:#fcfdff;
+  border-radius:0;
+  border:1px solid transparent;
+  box-shadow:none;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+  transition:
+    height .45s cubic-bezier(.22,1,.36,1),
+    max-width .45s cubic-bezier(.22,1,.36,1),
+    margin .45s cubic-bezier(.22,1,.36,1),
+    padding .45s cubic-bezier(.22,1,.36,1),
+    border-radius .45s cubic-bezier(.22,1,.36,1),
+    background .35s ease,
+    box-shadow .45s cubic-bezier(.22,1,.36,1),
+    border-color .35s ease;
 }
+/* Scrolled: nav becomes floating pill under top edge */
+.site-chrome.is-scrolled{
+  padding:14px 18px 0;
+}
+.site-chrome.is-scrolled .nav{
+  height:58px;
+  max-width:920px;
+  padding:0 18px 0 22px;
+  border-radius:999px;
+  background:rgba(255,255,255,.78);
+  -webkit-backdrop-filter:saturate(1.6) blur(18px);
+  backdrop-filter:saturate(1.6) blur(18px);
+  border-color:rgba(215,223,230,.65);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.7) inset,
+    0 10px 36px rgba(30,55,90,.1),
+    0 2px 8px rgba(30,55,90,.05);
+}
+.site-chrome.is-scrolled .brand{font-size:21px}
+.site-chrome.is-scrolled .brand img{width:26px;height:26px}
+.site-chrome.is-scrolled .nav nav{gap:26px;font-size:13px}
+.site-chrome.is-scrolled .button.small{padding:10px 18px;font-size:13px}
+.site-chrome.is-scrolled .brand,
+.site-chrome.is-scrolled .brand img,
+.site-chrome.is-scrolled .nav nav,
+.site-chrome.is-scrolled .button.small{
+  transition:font-size .35s ease,width .35s ease,height .35s ease,gap .35s ease,padding .35s ease;
+}
+
 /* Phone/device entrance: slide up from far below — no opacity fade */
 .app-window{
   animation:rise 1.35s cubic-bezier(.22,1.2,.36,1) both;
@@ -226,12 +272,28 @@ footer{
   to{translate:0 0}
 }
 @media(max-width:760px){
-  html{scroll-padding-top:130px}
-  .site-chrome{
-    /* keep usable on small screens */
-    background:rgba(252,253,255,.86);
+  html{scroll-padding-top:110px}
+  .site-chrome .nav{height:80px;padding:0 22px}
+  .site-chrome.is-scrolled{
+    padding:10px 12px 0;
   }
+  .site-chrome.is-scrolled .nav{
+    height:52px;
+    max-width:100%;
+    padding:0 12px 0 16px;
+  }
+  .site-chrome.is-scrolled .brand{font-size:18px}
+  .site-chrome.is-scrolled .brand img{width:24px;height:24px}
+  .site-chrome.is-scrolled .button.small{padding:9px 14px;font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){
   .app-window{animation:none}
+  .site-chrome,
+  .site-chrome .nav,
+  .site-chrome.is-scrolled .brand,
+  .site-chrome.is-scrolled .brand img,
+  .site-chrome.is-scrolled .nav nav,
+  .site-chrome.is-scrolled .button.small{
+    transition:none!important;
+  }
 }

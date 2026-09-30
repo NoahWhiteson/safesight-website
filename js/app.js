@@ -94,3 +94,23 @@ document.querySelectorAll('.questions details').forEach(details=>{
   animation.onfinish=()=>{details.open=desiredOpen;details.style.height='';animation=null;};
  });
 });
+
+/* Floating pill nav: toggle .is-scrolled on .site-chrome */
+(function(){
+  const chrome=document.querySelector('.site-chrome');
+  if(!chrome)return;
+  const threshold=36;
+  let ticking=false;
+  const sync=()=>{
+    const on=window.scrollY>threshold;
+    chrome.classList.toggle('is-scrolled',on);
+    ticking=false;
+  };
+  const onScroll=()=>{
+    if(ticking)return;
+    ticking=true;
+    requestAnimationFrame(sync);
+  };
+  sync();
+  window.addEventListener('scroll',onScroll,{passive:true});
+})();
