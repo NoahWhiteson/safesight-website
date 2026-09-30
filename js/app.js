@@ -2,14 +2,18 @@ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function wrapWords(el){
   if(!el||el.dataset.wc==='1')return;
+  // Skip if element only contains nested interactive/complex structure we shouldn't break
   const walk=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,{acceptNode(n){
-    if(!n.nodeValue||!n.nodeValue.trim())return NodeFilter.FILTER_REJECT;
-    if(n.parentElement&&n.parentElement.closest('a,button,script,style,.word-cascade'))return NodeFilter.FILTER_REJECT;
+    if(!n.nodeValue||!/\S/.test(n.nodeValue))return NodeFilter.FILTER_REJECT;
+    const p=n.parentElement;
+    if(!p)return NodeFilter.FILTER_REJECT;
+    if(p.closest('a,button,script,style,.word-cascade,.wc-word'))return NodeFilter.FILTER_REJECT;
     return NodeFilter.FILTER_ACCEPT;
   }});
   const nodes=[];while(walk.nextNode())nodes.push(walk.currentNode);
   nodes.forEach(textNode=>{
     const raw=textNode.nodeValue;
+    // Split into words + whitespace; whitespace stays as plain text so CSS spacing stays natural
     const parts=raw.split(/(\s+)/);
     const frag=document.createDocumentFragment();
     parts.forEach(part=>{
@@ -31,32 +35,44 @@ function wrapWords(el){
 
 function cascadeIn(el){
   if(!el||el.classList.contains('is-on'))return;
-  const inners=[...el.querySelectorAll('.wc-inner')];
-  inners.forEach((inner,i)=>{inner.style.animationDelay=(i*0.045)+'s';});
+  const inners=[...el.querySelectorAll(':scope > .wc-word > .wc-inner, .wc-word > .wc-inner')];
+  // Prefer direct word inners under this element only
+  const scoped=[...el.querySelectorAll('.wc-inner')].filter(n=>n.closest('.word-cascade')===el||el.contains(n));
+  scoped.forEach((inner,i)=>{inner.style.animationDelay=(i*0.04)+'s';});
   el.classList.add('is-on');
 }
 
 if('IntersectionObserver' in window&&!reduced){
   document.documentElement.classList.add('js-motion');
   const textTargets=[];
-  document.querySelectorAll('.reveal').forEach(block=>{
-    // Cascade text inside reveal blocks; leave non-text as already visible
-    const textEls=[...block.querySelectorAll('h1,h2,h3,p,summary,.kicker,.label,.micro,.section-head p')];
-    if(block.matches('h1,h2,h3,p,summary')) textEls.unshift(block);
-    const uniq=[...new Set(textEls)];
-    uniq.forEach(t=>{wrapWords(t);textTargets.push(t);});
-    block.classList.remove('reveal');
-  });
-  // Also hero copy text not marked reveal
-  document.querySelectorAll('.hero-copy h1,.hero-copy p,.launch-banner strong,.launch-banner span').forEach(t=>{
-    wrapWords(t);textTargets.push(t);
-  });
+  const add=(sel)=>{document.querySelectorAll(sel).forEach(t=>{wrapWords(t);textTargets.push(t);});};
+
+  // Only pure text containers — avoid wrapping whole feature cards / complex blocks
+  add('.hero-copy h1');
+  add('.hero-copy p');
+  add('.section-head h2');
+  add('.section-head p');
+  add('.section-head .kicker');
+  add('.steps h3');
+  add('.steps p');
+  add('.scan-content h2');
+  add('.scan-content > p');
+  add('.feature h3');
+  add('.feature > p, .feature-top > p');
+  add('.faq-intro h2');
+  add('.faq-intro p');
+  add('.faq-intro .kicker');
+  add('.closing h2');
+  add('.closing > p');
+  add('.questions summary');
+
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.remove('reveal'));
+
   const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
     if(entry.isIntersecting){cascadeIn(entry.target);observer.unobserve(entry.target);}
-  }),{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  }),{threshold:.1,rootMargin:'0px 0px -6% 0px'});
   textTargets.forEach(el=>observer.observe(el));
 }else{
-  // reduced motion / no IO: ensure anything we might wrap stays visible (no wrap needed)
   document.querySelectorAll('.reveal').forEach(el=>el.classList.remove('reveal'));
 }
 
