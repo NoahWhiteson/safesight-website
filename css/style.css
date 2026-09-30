@@ -36,3 +36,166 @@
 @media(prefers-reduced-motion:reduce){
   .word-cascade .wc-inner{transform:none;opacity:1;animation:none!important}
 }
+
+/* Marketing polish — tasteful refinements */
+a:focus-visible,button:focus-visible,summary:focus-visible,.report-link:focus-visible{
+  outline:2px solid #1674ec;
+  outline-offset:3px;
+  border-radius:8px;
+}
+.button:focus-visible,.button.secondary:focus-visible{
+  outline-offset:4px;
+  border-radius:50px;
+}
+.hazard-tabs button:focus-visible{
+  outline-offset:2px;
+  border-radius:30px;
+}
+.nav nav a:focus-visible,footer a:focus-visible,.brand:focus-visible{
+  outline-offset:4px;
+}
+
+.button{
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease,color .18s ease;
+}
+.button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 16px #101d2b22,inset 0 1px 0 #ffffff38;
+}
+.button:active{transform:translateY(0)}
+.button.secondary:hover{
+  border-color:#c9d4e0;
+  box-shadow:0 4px 12px #152b4414;
+  background:#fafcfe;
+}
+.button:not(.secondary):hover{
+  background:linear-gradient(180deg,#3a4250,#1a2230);
+}
+
+.section{
+  padding:100px 25px 28px;
+}
+.section.how{padding-top:100px}
+.features{padding-top:108px}
+.faq{
+  padding-top:108px;
+  padding-bottom:96px;
+  gap:64px;
+}
+.steps{margin:56px 0 72px}
+.feature-grid{margin-top:48px;gap:20px}
+.closing{
+  padding:80px 24px 84px;
+  margin:8px 35px 0;
+}
+
+.report-link{
+  display:block;
+  position:relative;
+  height:180px;
+  margin-top:28px;
+  overflow:hidden;
+  border-radius:14px;
+  transform:rotate(2deg);
+  box-shadow:0 10px 28px #27486612,0 0 0 1px #d7e0ea;
+  background:#e8eef5;
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.report-link img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 55%;
+  transition:transform .45s ease;
+}
+.report-link:hover{
+  transform:rotate(1deg) translateY(-2px);
+  box-shadow:0 14px 32px #27486618,0 0 0 1px #c8d5e3;
+}
+.report-link:hover img{transform:scale(1.04)}
+.report-link>span{
+  position:absolute;
+  bottom:12px;
+  left:12px;
+  right:12px;
+  text-align:center;
+  background:#fffffff2;
+  border:1px solid #e8eef5;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:550;
+  color:#2a3a4d;
+  padding:10px 12px;
+  backdrop-filter:blur(6px);
+  box-shadow:0 2px 8px #152b440a;
+}
+
+.questions details{
+  border-bottom:1px solid var(--line);
+  padding:18px 0;
+}
+.questions details:first-child{padding-top:6px}
+.questions summary{
+  font-size:15px;
+  font-weight:550;
+  letter-spacing:-.2px;
+  padding:4px 32px 4px 0;
+  border-radius:6px;
+}
+.questions summary:hover{color:#0f1724}
+.questions summary:after{
+  top:4px;
+  opacity:.75;
+}
+.faq-answer{
+  padding:4px 4px 6px 0;
+}
+.questions p{
+  margin-top:12px;
+  line-height:1.7;
+  max-width:48ch;
+}
+.questions details a{
+  margin-top:10px;
+  font-weight:550;
+}
+.questions details a:hover{text-decoration:underline;text-underline-offset:3px}
+
+footer{
+  padding:56px 6% 36px;
+}
+.footer-top{
+  padding-bottom:28px;
+}
+.footer-top>div{
+  gap:32px;
+  font-size:13px;
+}
+.footer-bottom{
+  padding-top:22px;
+  font-size:12px;
+  line-height:1.55;
+  gap:24px;
+}
+
+.hazard-tabs button{
+  transition:background .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease;
+}
+.hazard-tabs button:hover:not([aria-selected=true]){
+  color:#3d4d60;
+  background:#ffffff80;
+}
+
+@media(max-width:760px){
+  .section{padding:72px 23px 12px}
+  .features{padding-top:80px}
+  .faq{padding-top:80px;padding-bottom:64px;gap:28px}
+  .closing{margin:0 15px;padding:60px 20px 68px}
+  .feature-share .report-link{height:220px;transform:none}
+  .feature-share .report-link:hover{transform:translateY(-2px)}
+  footer{padding:40px 23px 28px}
+  .footer-top>div{gap:18px}
+}
+@media(prefers-reduced-motion:reduce){
+  .button,.report-link,.report-link img,.hazard-tabs button{transition:none}
+}
